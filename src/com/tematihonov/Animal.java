@@ -21,4 +21,20 @@ public class Animal {
     public void setHabitat(String habitat) {
         this.habitat = habitat;
     }
+
+    public int getIdAnimal() {
+        return idAnimal;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getHabitat() {
+        return habitat;
+    }
+
+    public String getType() {
+        return type;
+    }
 }

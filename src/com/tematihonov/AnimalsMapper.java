@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class AnimalsMapper {
+    private static AnimalsMapper instance;
     // 1. Для всех объектов, которые непосредственно хранятся в БД, реализовать шаблон Data Mapper.
     // Структура таблицы:
     //    idAnimal int primary key
@@ -14,10 +17,11 @@ public class AnimalsMapper {
     //    habitat varchar(32)
 
     private final Connection connection;
-
     public AnimalsMapper(Connection connection) {
         this.connection = connection;
     }
+
+    private Map<String, Animal> animalMap = new HashMap(); //Task 2.
 
     public Animal findByType(int idAnimal) throws SQLException {
         PreparedStatement statement = connection.prepareStatement(
@@ -26,9 +30,9 @@ public class AnimalsMapper {
         try (ResultSet resultSet = statement.executeQuery()) {
             while (resultSet.next()) {
                 Animal animal = new Animal();
-                animal.setType(resultSet.getString(1));
-                animal.setName(resultSet.getString(2));
-                animal.setHabitat(resultSet.getString(3));
+                animal.setType(resultSet.getString(2));
+                animal.setName(resultSet.getString(3));
+                animal.setHabitat(resultSet.getString(4));
                 return animal;
             }
         }
@@ -42,5 +46,14 @@ public class AnimalsMapper {
 
     public void delete(Animal animal) {
     }
+
+    public static void addAnimal(Animal animal) {
+        instance.animalMap.put(animal.getType(), animal);
+    }
+
+    public static Animal getAnimal(Long key) {
+        return instance.animalMap.get(key);
+    }
+
 
 }
